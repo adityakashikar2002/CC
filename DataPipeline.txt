@@ -1,0 +1,130 @@
+after phas 2 task 2 is done follow from here
+whereis httpd
+cd /etc/httpd/
+sudo tail -f /etc/httpd/logs/access_log
+
+load website part
+
+sudo cp /var/log/httpd/access_log /home/ec2-user/environment/initial_access_log
+
+Phase 3 Task 2 runn till sudo cat..
+
+sudo find /etc -name httpd.conf
+sudo cp /etc/httpd/conf/httpd.conf /home/ec2-user/environment/httpd.conf
+
+Task 3: Configuring the httpd.conf log format as JSON go to point 2
+sudo ln -s /etc/httpd/conf /home/ec2-user/environment/httpdconf
+sudo chown -R ec2-user /etc/httpd/conf
+
+make the changes as needed replacement
+
+sudo mkdir -p /var/log/www/error
+sudo chown -R apache:apache /var/log/www
+
+sudo mkdir -p /var/log/www/access
+sudo chown -R apache:apache /var/log/www
+sudo systemctl restart httpd
+sudo find / -name '*cloudwatch*json*' 2>/dev/null
+
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/doc/amazon-cloudwatch-agent-schema.json
+sudo systemctl start amazon-cloudwatch-agent.service
+sudo ls -l /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+
+
+service amazon-cloudwatch-agent status
+sudo journalctl -xe -u amazon-cloudwatch-agent.service
+
+
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
+
+paste the content
+sudo systemctl start amazon-cloudwatch-agent.service
+service amazon-cloudwatch-agent status
+sudo cat /opt/aws/amazon-cloudwatch-agent/bin/config.json
+
+sudo nano /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+sudo systemctl restart amazon-cloudwatch-agent.service
+service amazon-cloudwatch-agent status
+sudo find / -name amazon-cloudwatch-agent.log 2>/dev/null
+sudo cat /opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log
+
+goto cafe and make some order
+
+cd..
+cd..
+
+cat ~/environment/samplelogs/access_log.log | head
+cat samplelogs/access_log.log | head -l | python -n json.tool
+
+cd /home/ec2-user/environment
+cat samplelogs/access_log.log | head -l | python -n json.tool
+cat samplelogs/access_log.log| wc -l
+
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -n ec2 -a stop
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a stop
+
+sudo service amazon-cloudwatch-agent status
+sudo cp /home/ec2-user/environment/samplelogs/access_log.log /var/log/www/access/access_log
+sudo systemctl restart amazon-cloudwatch-agent.service
+sudo service amazon-cloudwatch-agent status
+
+goto cloudwatch apache access
+run the query
+
+phase 6 task 1
+	 2)
+
+fields @timestamp, remoteIP
+| filter request = "/cafe/menu.php"
+| count(remoteIP) as Visitors by @timestamp
+| sort @timestamp asc
+
+if dont work
+
+fields @timestamp, remoteIP
+| filter request = "/cafe/menu.php"
+| stats count(remoteIP) as Visitors by @timestamp
+| sort @timestamp asc
+
+
+save the query
+name- menu-visitors
+folder-optional non-geo-results
+
+head -l samplelogs/access_log_geo.log | python -n json.tool
+
+cat samplelogs/access_log_geo.log | wc -l
+
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -n ec2 -a stop
+
+sudo service amazon-cloudwatch-agent status
+
+delete the access/apache
+by below inside it
+
+sudo cp /home/ec2-user/environment/samplelogs/access_log_geo.log /var/log/www/access/access_log
+
+sudo wc -l /var/log/www/access/access_log
+
+sudo systemctl restart amazon-cloudwatch-agent.service
+
+sudo service amazon-cloudwatch-agent status
+
+phase 7 task 3 complete
+
+Goto amazon s3 
+sudo aws s3 cp /home/ec2-user/environment/samplelogs/access_log_geo.log s3://<bucketname>
+
+run sql query 
+input---
+json
+document
+
+
+add sql from templates
+
+copy a query run
+
+khatam
+
+
